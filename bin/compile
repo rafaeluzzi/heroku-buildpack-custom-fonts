@@ -1,13 +1,20 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-BUILD_DIR=$1
+function indent() {
+	c='s/^/       /'
+	case $(uname) in
+		Darwin) sed -l "$c";;
+		*)      sed -u "$c";;
+	esac
+}
 
-echo "-----> Installing custom fonts"
+BUILD_DIR="$1"
+SOURCE_DIR="$(dirname $0)/../fonts.tar.gz"
+TARGET_DIR="$BUILD_DIR/.fonts"
 
-FONT_DIR="$BUILD_DIR/.heroku/fonts"
-mkdir -p $FONT_DIR
+echo "-----> Extracting fonts to $TARGET_DIR"
 
-# Copy your custom fonts from the buildpack to the app's .heroku directory
-cp fonts/* $FONT_DIR/
+mkdir -p "$TARGET_DIR"
+tar -xvzf "$SOURCE_DIR" -C "$TARGET_DIR" | indent
 
-echo "-----> Finished installing custom fonts"
+fc-cache -fv
