@@ -1,0 +1,13 @@
+#!/bin/sh
+
+BUILD_DIR=$1
+
+echo "-----> Installing custom fonts"
+
+FONT_DIR="$BUILD_DIR/.heroku/fonts"
+mkdir -p $FONT_DIR
+
+# Copy your custom fonts from the buildpack to the app's .heroku directory
+cp fonts/* $FONT_DIR/
+
+echo "-----> Finished installing custom fonts"
